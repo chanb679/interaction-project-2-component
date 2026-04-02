@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> — All Produce</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F4F1EC;--white:#FDFCFA;--ink:#1A1A18;--ink2:#6A6A62;--ink3:#AAAAA0;
+  --shadow:rgba(26,26,24,.07);
+  --fd:'Fraunces',serif;--fb:'DM Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--fb);cursor:none;overflow-x:hidden;min-height:100vh}
+
+/* CURSOR */
+#cur{position:fixed;width:8px;height:8px;background:var(--ink);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .15s,height .15s,background .15s,border .15s}
+#cur.big{width:36px;height:36px;background:transparent;border:1px solid var(--ink)}
+
+/* back link — only UI element */
+.back{
+  position:fixed;top:1.5rem;left:1.5rem;z-index:100;
+  font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink3);text-decoration:none;
+  transition:color .2s;
+}
+.back:hover{color:var(--ink)}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:1rem;
+  padding:5rem 2.5rem 4rem;
+}
+
+/* CARD */
+.card{
+  background:var(--white);
+  border-radius:20px;
+  overflow:hidden;
+  cursor:none;
+  position:relative;
+  box-shadow:0 2px 12px var(--shadow);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;
+  grid-column:span 1;
+  grid-row:span 1;
+}
+.card:hover{
+  transform:translateY(-6px) scale(1.02);
+  box-shadow:0 16px 40px rgba(26,26,24,.12);
+}
+
+/* FRONT */
+.cf{
+  padding:2rem 1.2rem 1.5rem;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  transition:opacity .3s,height .3s;
+}
+.cf-e{
+  font-size:3.8rem;line-height:1;
+  margin-bottom:1rem;
+  filter:drop-shadow(0 3px 10px rgba(0,0,0,.08));
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+  display:block;
+}
+.card:hover .cf-e{transform:scale(1.12) rotate(-5deg) translateY(-4px)}
+.cf-name{font-family:var(--fd);font-size:.9rem;font-weight:700;margin-bottom:.2rem}
+.cf-lbl{font-size:.44rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin-bottom:.6rem}
+.cf-dot-row{display:flex;gap:4px;justify-content:center}
+.cf-dot{width:9px;height:9px;border-radius:50%}
+
+/* EXPANDED */
+.card.expanded{
+  grid-column:span 2;
+  grid-row:span 2;
+  z-index:10;
+  transform:none!important;
+  box-shadow:0 24px 60px rgba(26,26,24,.16);
+}
+.card.expanded .cf{
+  opacity:0;pointer-events:none;
+  height:0;padding:0;overflow:hidden;
+}
+
+/* DETAIL */
+.cd{display:none;min-height:320px;flex-direction:column}
+.card.expanded .cd{display:flex}
+
+.cd-top{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:2.5rem 2rem 1.5rem;
+}
+.cd-e{
+  font-size:5.5rem;line-height:1;margin-bottom:1.2rem;
+  filter:drop-shadow(0 8px 20px rgba(0,0,0,.1));
+  animation:pop .4s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes pop{from{transform:scale(.6) rotate(-10deg);opacity:0}to{transform:scale(1);opacity:1}}
+.cd-name{font-family:var(--fd);font-size:1.5rem;font-weight:700;color:white;margin-bottom:.2rem;text-align:center}
+.cd-latin{font-family:var(--fd);font-size:.65rem;font-style:italic;font-weight:300;color:rgba(255,255,255,.5);margin-bottom:1rem;text-align:center}
+.cd-pills{display:flex;gap:.4rem;justify-content:center;flex-wrap:wrap;margin-bottom:.8rem}
+.cd-pill{background:rgba(255,255,255,.15);border-radius:100px;padding:.25rem .7rem;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+.cd-bottom{padding:.75rem 1.5rem 1.5rem;border-top:1px solid rgba(255,255,255,.12)}
+.cd-desc{font-size:.7rem;line-height:1.75;color:rgba(255,255,255,.75);text-align:center}
+.cd-hint{font-size:.44rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.25);text-align:center;margin-top:.6rem}
+
+@media(max-width:1100px){.grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:800px){.grid{grid-template-columns:repeat(3,1fr);padding:4rem 1.5rem 3rem}}
+@media(max-width:500px){.grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<a class="back" href="index.html">←</a>
+
+<div class="grid" id="grid">
+
+  <!-- 1 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🍅" data-name="Tomato" data-latin="Solanum lycopersicum"
+    data-pills="18 kcal|Lycopene|Jul–Aug"
+    data-bg="#C03020"
+    data-desc="July tomatoes are the sweetest of the year. Lycopene — the red pigment — is a powerful antioxidant linked to heart health.">
+    <div class="cf"><span class="cf-e">🍅</span><p class="cf-name">Tomato</p><p class="cf-lbl">Fruit · Summer</p><div class="cf-dot-row"><div class="cf-dot" style="background:#B82010"></div><div class="cf-dot" style="background:#E05030"></div><div class="cf-dot" style="background:#F5A090"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 2 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🌽" data-name="Sweet Corn" data-latin="Zea mays"
+    data-pills="86 kcal|Lutein|Jul–Aug"
+    data-bg="#9A7000"
+    data-desc="Sugar converts to starch within hours of picking. Cook the same day for the best flavour. The chalok variety is uniquely Korean.">
+    <div class="cf"><span class="cf-e">🌽</span><p class="cf-name">Sweet Corn</p><p class="cf-lbl">Grain · Summer</p><div class="cf-dot-row"><div class="cf-dot" style="background:#D4A000"></div><div class="cf-dot" style="background:#ECC840"></div><div class="cf-dot" style="background:#F8E898"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 3 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🍑" data-name="Peach" data-latin="Prunus persica"
+    data-pills="39 kcal|Vitamin A|Jul–Aug"
+    data-bg="#A05028"
+    data-desc="Gyeongbuk peaches ripen slowly in the continental climate. Press gently to test — never refrigerate before ripe.">
+    <div class="cf"><span class="cf-e">🍑</span><p class="cf-name">Peach</p><p class="cf-lbl">Stone Fruit · Summer</p><div class="cf-dot-row"><div class="cf-dot" style="background:#D07040"></div><div class="cf-dot" style="background:#E89A70"></div><div class="cf-dot" style="background:#F8C8A8"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 4 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🥒" data-name="Cucumber" data-latin="Cucumis sativus"
+    data-pills="15 kcal|96% water|Jun–Aug"
+    data-bg="#1A5A1A"
+    data-desc="96% water content makes cucumber nature's best cooling food. Cucurbitacin in the skin is a natural anti-inflammatory.">
+    <div class="cf"><span class="cf-e">🥒</span><p class="cf-name">Cucumber</p><p class="cf-lbl">Vegetable · Summer</p><div class="cf-dot-row"><div class="cf-dot" style="background:#206820"></div><div class="cf-dot" style="background:#50A050"></div><div class="cf-dot" style="background:#98D098"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 5 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🥬" data-name="Perilla" data-latin="Perilla frutescens"
+    data-pills="37 kcal|Iron 3.5mg|Jun–Sep"
+    data-bg="#2A5A2A"
+    data-desc="Pick at dawn when essential oils peak. Iron content rivals red meat. A Korean kitchen essential — wraps, pickles, pesto.">
+    <div class="cf"><span class="cf-e">🥬</span><p class="cf-name">Perilla</p><p class="cf-lbl">Herb · Summer</p><div class="cf-dot-row"><div class="cf-dot" style="background:#1A5A1A"></div><div class="cf-dot" style="background:#3A8A3A"></div><div class="cf-dot" style="background:#80C080"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 6 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🍆" data-name="Eggplant" data-latin="Solanum melongena"
+    data-pills="25 kcal|Nasunin|Jul–Sep"
+    data-bg="#481A78"
+    data-desc="Nasunin — the purple pigment — is one of the most potent antioxidants. Over 90% water. Roast at high heat to caramelize.">
+    <div class="cf"><span class="cf-e">🍆</span><p class="cf-name">Eggplant</p><p class="cf-lbl">Vegetable · Summer</p><div class="cf-dot-row"><div class="cf-dot" style="background:#481A78"></div><div class="cf-dot" style="background:#7848B0"></div><div class="cf-dot" style="background:#C0A0E0"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 7 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🫐" data-name="Blueberry" data-latin="Vaccinium corymbosum"
+    data-pills="57 kcal|Anthocyanin|Jun–Aug"
+    data-bg="#28186A"
+    data-desc="Highest antioxidant rating of all common fruits. Anthocyanins support brain function and memory. Do not wash until ready to eat.">
+    <div class="cf"><span class="cf-e">🫐</span><p class="cf-name">Blueberry</p><p class="cf-lbl">Berry · Summer</p><div class="cf-dot-row"><div class="cf-dot" style="background:#28186A"></div><div class="cf-dot" style="background:#5848A0"></div><div class="cf-dot" style="background:#B0A0D8"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 8 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🍉" data-name="Watermelon" data-latin="Citrullus lanatus"
+    data-pills="30 kcal|92% water|Aug"
+    data-bg="#8A1A10"
+    data-desc="92% water. Citrulline in the white rind supports circulation and muscle recovery. Store whole at room temperature.">
+    <div class="cf"><span class="cf-e">🍉</span><p class="cf-name">Watermelon</p><p class="cf-lbl">Fruit · Summer</p><div class="cf-dot-row"><div class="cf-dot" style="background:#C03020"></div><div class="cf-dot" style="background:#60C030"></div><div class="cf-dot" style="background:#F0F0E0"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 9 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🫑" data-name="Bell Pepper" data-latin="Capsicum annuum"
+    data-pills="31 kcal|Vit C ×3|Jul–Sep"
+    data-bg="#7A5000"
+    data-desc="Red bell peppers contain three times more Vitamin C than oranges. Colour indicates ripeness — green unripe, red sweetest.">
+    <div class="cf"><span class="cf-e">🫑</span><p class="cf-name">Bell Pepper</p><p class="cf-lbl">Vegetable · Summer</p><div class="cf-dot-row"><div class="cf-dot" style="background:#B01818"></div><div class="cf-dot" style="background:#D89000"></div><div class="cf-dot" style="background:#208020"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 10 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🍎" data-name="Apple" data-latin="Malus domestica"
+    data-pills="52 kcal|Quercetin|Sep–Nov"
+    data-bg="#7A1010"
+    data-desc="Quercetin and catechin in apple skin reduce inflammation. Eat with the skin. September apples from Gyeongbuk are crisp and deeply flavoured.">
+    <div class="cf"><span class="cf-e">🍎</span><p class="cf-name">Apple</p><p class="cf-lbl">Fruit · Autumn</p><div class="cf-dot-row"><div class="cf-dot" style="background:#A81818"></div><div class="cf-dot" style="background:#D84848"></div><div class="cf-dot" style="background:#F8B8B8"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 11 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🍇" data-name="Grape" data-latin="Vitis vinifera"
+    data-pills="69 kcal|Resveratrol|Sep–Oct"
+    data-bg="#3A1060"
+    data-desc="Resveratrol in grape skin has cardiovascular benefits. Korean Muscat grapes peak in September — sweetest after a dry summer.">
+    <div class="cf"><span class="cf-e">🍇</span><p class="cf-name">Grape</p><p class="cf-lbl">Fruit · Autumn</p><div class="cf-dot-row"><div class="cf-dot" style="background:#4A1A7A"></div><div class="cf-dot" style="background:#8A50C0"></div><div class="cf-dot" style="background:#C8A8E8"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 12 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🌰" data-name="Chestnut" data-latin="Castanea crenata"
+    data-pills="245 kcal|Vitamin C|Sep–Oct"
+    data-bg="#5A2808"
+    data-desc="Unlike other nuts, chestnuts are high in carbs and low in fat. Vitamin C content is unusually high for a nut. Peak in mid-September.">
+    <div class="cf"><span class="cf-e">🌰</span><p class="cf-name">Chestnut</p><p class="cf-lbl">Nut · Autumn</p><div class="cf-dot-row"><div class="cf-dot" style="background:#8A5020"></div><div class="cf-dot" style="background:#C08040"></div><div class="cf-dot" style="background:#F0D0A0"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 13 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🍄" data-name="Shiitake" data-latin="Lentinula edodes"
+    data-pills="34 kcal|Vitamin D|Sep–Nov"
+    data-bg="#4A2808"
+    data-desc="Dry in sunlight to multiply Vitamin D by 10×. Umami depth unmatched among cultivated mushrooms. First flush arrives in September.">
+    <div class="cf"><span class="cf-e">🍄</span><p class="cf-name">Shiitake</p><p class="cf-lbl">Fungi · Autumn</p><div class="cf-dot-row"><div class="cf-dot" style="background:#6A4818"></div><div class="cf-dot" style="background:#A07840"></div><div class="cf-dot" style="background:#D8C0A0"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 14 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🍠" data-name="Sweet Potato" data-latin="Ipomoea batatas"
+    data-pills="86 kcal|Beta-carotene|Aug–Oct"
+    data-bg="#8A4808"
+    data-desc="Beta-carotene converts to Vitamin A in the body. The purple variety contains anthocyanins on top. Jeollanam-do produces Korea's sweetest variety.">
+    <div class="cf"><span class="cf-e">🍠</span><p class="cf-name">Sweet Potato</p><p class="cf-lbl">Root · Autumn</p><div class="cf-dot-row"><div class="cf-dot" style="background:#C07828"></div><div class="cf-dot" style="background:#E0A060"></div><div class="cf-dot" style="background:#F8D8A8"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 15 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🎃" data-name="Kabocha Squash" data-latin="Cucurbita maxima"
+    data-pills="45 kcal|Vitamin A|Oct–Nov"
+    data-bg="#8A4800"
+    data-desc="Sweeter than western pumpkin. The skin is edible when roasted. Vitamin A content rivals carrots. Season starts late September.">
+    <div class="cf"><span class="cf-e">🎃</span><p class="cf-name">Kabocha Squash</p><p class="cf-lbl">Vegetable · Autumn</p><div class="cf-dot-row"><div class="cf-dot" style="background:#C07000"></div><div class="cf-dot" style="background:#E0A000"></div><div class="cf-dot" style="background:#F8D870"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 16 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🍐" data-name="Korean Pear" data-latin="Pyrus pyrifolia"
+    data-pills="57 kcal|Fiber|Sep–Oct"
+    data-bg="#5A5A10"
+    data-desc="Crunchier and larger than western pear. High in fiber and water — refreshing rather than sweet. Naju is Korea's famous pear-growing region.">
+    <div class="cf"><span class="cf-e">🍐</span><p class="cf-name">Korean Pear</p><p class="cf-lbl">Fruit · Autumn</p><div class="cf-dot-row"><div class="cf-dot" style="background:#9A9A30"></div><div class="cf-dot" style="background:#C8C860"></div><div class="cf-dot" style="background:#E8E8C0"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 17 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🍊" data-name="Mandarin" data-latin="Citrus reticulata"
+    data-pills="53 kcal|Vitamin C|Nov–Feb"
+    data-bg="#9A3800"
+    data-desc="Jeju mandarins peak November through January. Thin-skinned and intensely fragrant — a Korean winter staple.">
+    <div class="cf"><span class="cf-e">🍊</span><p class="cf-name">Mandarin</p><p class="cf-lbl">Citrus · Winter</p><div class="cf-dot-row"><div class="cf-dot" style="background:#D86010"></div><div class="cf-dot" style="background:#F09040"></div><div class="cf-dot" style="background:#FFD0A0"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 18 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🥦" data-name="Broccoli" data-latin="Brassica oleracea"
+    data-pills="34 kcal|Sulforaphane|Nov–Mar"
+    data-bg="#0A4808"
+    data-desc="Sulforaphane activates the body's antioxidant defence. Steam briefly — overcooking destroys most of the benefit.">
+    <div class="cf"><span class="cf-e">🥦</span><p class="cf-name">Broccoli</p><p class="cf-lbl">Brassica · Winter</p><div class="cf-dot-row"><div class="cf-dot" style="background:#1A6A1A"></div><div class="cf-dot" style="background:#50A050"></div><div class="cf-dot" style="background:#A0D0A0"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 19 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🍓" data-name="Strawberry" data-latin="Fragaria ananassa"
+    data-pills="32 kcal|Folate|Mar–May"
+    data-bg="#8A0818"
+    data-desc="First strawberries of spring. Folate and Vitamin C peak before the fruit fully reddens. Chungnam is Korea's main strawberry region.">
+    <div class="cf"><span class="cf-e">🍓</span><p class="cf-name">Strawberry</p><p class="cf-lbl">Berry · Spring</p><div class="cf-dot-row"><div class="cf-dot" style="background:#C01830"></div><div class="cf-dot" style="background:#E85070"></div><div class="cf-dot" style="background:#F8B0C0"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 20 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🍒" data-name="Cherry" data-latin="Prunus avium"
+    data-pills="63 kcal|Anthocyanin|May–Jun"
+    data-bg="#901030"
+    data-desc="Korean cherries have only a 3–4 week season. Anthocyanins give the deep red colour and anti-inflammatory properties.">
+    <div class="cf"><span class="cf-e">🍒</span><p class="cf-name">Cherry</p><p class="cf-lbl">Fruit · Spring</p><div class="cf-dot-row"><div class="cf-dot" style="background:#901030"></div><div class="cf-dot" style="background:#C04060"></div><div class="cf-dot" style="background:#F0A0B0"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 21 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🥝" data-name="Kiwi" data-latin="Actinidia deliciosa"
+    data-pills="61 kcal|Actinidin|Apr–May"
+    data-bg="#285808"
+    data-desc="Actinidin breaks down proteins — ideal as a meat tenderiser. Vitamin C is double that of oranges per weight.">
+    <div class="cf"><span class="cf-e">🥝</span><p class="cf-name">Kiwi</p><p class="cf-lbl">Fruit · Spring</p><div class="cf-dot-row"><div class="cf-dot" style="background:#508820"></div><div class="cf-dot" style="background:#80B850"></div><div class="cf-dot" style="background:#C0E0A0"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 22 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🥕" data-name="Carrot" data-latin="Daucus carota"
+    data-pills="41 kcal|Beta-carotene|Year round"
+    data-bg="#9A4800"
+    data-desc="Beta-carotene absorption increases 5× when cooked with fat. Always roast with oil for best nutrition. Sweetest in winter.">
+    <div class="cf"><span class="cf-e">🥕</span><p class="cf-name">Carrot</p><p class="cf-lbl">Root · Year round</p><div class="cf-dot-row"><div class="cf-dot" style="background:#D86010"></div><div class="cf-dot" style="background:#F09040"></div><div class="cf-dot" style="background:#FFD0A0"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 23 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🧄" data-name="Garlic" data-latin="Allium sativum"
+    data-pills="149 kcal|Allicin|Year round"
+    data-bg="#5A5A38"
+    data-desc="Allicin — released when garlic is crushed — is a natural antimicrobial. Let it rest 10 minutes after crushing for maximum potency.">
+    <div class="cf"><span class="cf-e">🧄</span><p class="cf-name">Garlic</p><p class="cf-lbl">Allium · Year round</p><div class="cf-dot-row"><div class="cf-dot" style="background:#C8C8A0"></div><div class="cf-dot" style="background:#D8D8C0"></div><div class="cf-dot" style="background:#F0F0E8"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 24 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🍋" data-name="Lemon" data-latin="Citrus limon"
+    data-pills="29 kcal|Vitamin C|Year round"
+    data-bg="#8A7800"
+    data-desc="Freeze the whole fruit — zest from frozen lemons keeps six months. Limonene in the peel has anti-anxiety properties.">
+    <div class="cf"><span class="cf-e">🍋</span><p class="cf-name">Lemon</p><p class="cf-lbl">Citrus · Year round</p><div class="cf-dot-row"><div class="cf-dot" style="background:#D4C000"></div><div class="cf-dot" style="background:#EED840"></div><div class="cf-dot" style="background:#FFF5A0"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+  <!-- 25 -->
+  <div class="card" onclick="expand(this)"
+    data-e="🥑" data-name="Avocado" data-latin="Persea americana"
+    data-pills="160 kcal|Good fat|Year round"
+    data-bg="#304808"
+    data-desc="Ripens after picking, not on the tree. Press gently — ready when it yields slightly to pressure. Rich in oleic acid and folate.">
+    <div class="cf"><span class="cf-e">🥑</span><p class="cf-name">Avocado</p><p class="cf-lbl">Tropical · Year round</p><div class="cf-dot-row"><div class="cf-dot" style="background:#507820"></div><div class="cf-dot" style="background:#80B040"></div><div class="cf-dot" style="background:#C0D890"></div></div></div>
+    <div class="cd"></div>
+  </div>
+
+</div>
+
+<script>
+// cursor
+const cur=document.getElementById('cur');
+document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px'});
+document.querySelectorAll('.card').forEach(c=>{
+  c.addEventListener('mouseenter',()=>cur.classList.add('big'));
+  c.addEventListener('mouseleave',()=>cur.classList.remove('big'));
+});
+
+// expand / collapse
+let open=null;
+function expand(card){
+  if(card===open){collapse(card);return}
+  if(open) collapse(open);
+
+  const bg=card.dataset.bg||'#333';
+  const pills=(card.dataset.pills||'').split('|');
+  card.querySelector('.cd').innerHTML=`
+    <div class="cd-top" style="background:${bg}">
+      <span class="cd-e">${card.dataset.e}</span>
+      <p class="cd-name">${card.dataset.name}</p>
+      <p class="cd-latin">${card.dataset.latin}</p>
+      <div class="cd-pills">${pills.map(p=>`<span class="cd-pill">${p}</span>`).join('')}</div>
+    </div>
+    <div class="cd-bottom" style="background:${bg}">
+      <p class="cd-desc">${card.dataset.desc}</p>
+      <p class="cd-hint">click to close</p>
+    </div>`;
+
+  card.classList.add('expanded');
+  card.style.cursor='none';
+  open=card;
+  setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'nearest'}),50);
+}
+function collapse(card){
+  card.classList.remove('expanded');
+  setTimeout(()=>{card.querySelector('.cd').innerHTML=''},400);
+  if(open===card) open=null;
+}
+document.addEventListener('click',e=>{
+  if(open&&!open.contains(e.target)) collapse(open);
+});
+</script>
+</body>
+</html>
