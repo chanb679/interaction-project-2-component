@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> — September</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#F4F1EC;--white:#FDFCFA;--ink:#1A1A18;--ink2:#5A5A54;--ink3:#AAAAA0;--rule:rgba(26,26,24,.08);--sh:rgba(26,26,24,.07);--ac:#7A3A1A;--fd:'Fraunces',serif;--fb:'DM Sans',sans-serif}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--fb);cursor:none;overflow-x:hidden}
+#cur{position:fixed;width:10px;height:10px;background:var(--ink);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:all .15s}
+#cur.h{width:40px;height:40px;background:transparent;border:1.5px solid var(--ink)}
+/* produce-specific cursor */
+#cur.produce{width:52px;height:52px;background:transparent;border:2px solid var(--ac);transform:translate(-50%,-50%) rotate(0deg)}
+nav{position:sticky;top:0;z-index:200;background:var(--bg);border-bottom:1px solid var(--rule);height:52px;padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between}
+.nl2{display:flex;align-items:center;gap:1.2rem}
+.nb{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);text-decoration:none;transition:color .2s}
+.nb:hover{color:var(--ink)}
+.ns{width:1px;height:14px;background:var(--rule)}
+.logo{font-family:var(--fd);font-size:1.1rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;color:var(--ink)}
+.nr2{display:flex;align-items:center;gap:1.2rem}
+.nm{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)}
+.cart-btn{background:var(--ink);color:var(--white);border:none;border-radius:100px;padding:.45rem 1.1rem;font-family:var(--fb);font-size:.6rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;cursor:none;display:flex;align-items:center;gap:.5rem;transition:background .2s}
+.cart-btn:hover{background:#333}
+.cc{background:#C84020;color:white;border-radius:50%;width:16px;height:16px;font-size:.55rem;font-weight:700;display:flex;align-items:center;justify-content:center;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.cc.b{transform:scale(1.6)}
+.pt{padding:2.2rem 2.5rem 1.6rem;display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--rule)}
+.ptl p:first-child{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3);margin-bottom:.4rem}
+.ptl h1{font-family:var(--fd);font-size:clamp(2.5rem,5vw,4rem);font-weight:900;letter-spacing:-.02em;line-height:1}
+.ptl h1 em{font-style:italic;font-weight:300}
+.ptr{text-align:right}
+.ptr p:first-child{font-family:var(--fd);font-size:2.5rem;font-weight:900;line-height:1}
+.ptr p:last-child{font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-top:.2rem}
+.fb{padding:1rem 2.5rem;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;background:var(--white)}
+.flbl{font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin-right:.25rem}
+.fbtn{font-family:var(--fb);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--rule);background:transparent;padding:.32rem .85rem;border-radius:100px;cursor:none;color:var(--ink2);transition:all .2s}
+.fbtn:hover{border-color:var(--ink2);color:var(--ink)}
+.fbtn.on{background:var(--ink);color:white;border-color:var(--ink)}
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;padding:1.8rem 2.5rem}
+.fw{cursor:none;min-height:290px;position:relative;transition:opacity .3s}
+.fw.hidden{opacity:0;pointer-events:none;transform:scale(.96)}
+.fi{position:relative;width:100%;height:100%;min-height:290px;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.4,0,.2,1)}
+.fw.flipped .fi{transform:rotateY(180deg)}
+.ff,.bk{position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.ff{background:var(--white);box-shadow:0 2px 16px var(--sh);transition:box-shadow .3s}
+.fw:not(.flipped):hover .ff{box-shadow:0 12px 36px rgba(26,26,24,.13)}
+.ft2{height:185px;display:flex;align-items:flex-end;justify-content:center;overflow:visible;padding-top:1.5rem;position:relative;flex-shrink:0}
+.pe{font-size:6.5rem;line-height:1;display:block;transform:translateY(26%);filter:drop-shadow(0 6px 16px rgba(0,0,0,.11));transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+.fw:not(.flipped):hover .pe{transform:translateY(16%) scale(1.09) rotate(-7deg)}
+.ph{position:absolute;top:.7rem;right:.7rem;background:rgba(0,0,0,.05);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:var(--ink3);transition:background .2s}
+.fw:hover .ph{background:rgba(0,0,0,.1)}
+.phb{position:absolute;top:.6rem;left:.6rem;display:flex;flex-direction:column;gap:.35rem;opacity:0;transform:translateY(4px);transition:opacity .25s,transform .25s;z-index:3}
+.fw:hover .phb{opacity:1;transform:translateY(0)}
+.pb2{background:rgba(255,255,255,.92);border:none;border-radius:100px;padding:.28rem .65rem;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;cursor:none;font-family:var(--fb);font-weight:500;color:var(--ink);transition:background .15s;white-space:nowrap}
+.pb2:hover{background:white}
+.pb2.fvb.on{background:#FFE8E8;color:#C84020}
+.fb2{padding:2.3rem 1.3rem 1.2rem;border-top:1px solid var(--rule);margin-top:auto}
+.pn{font-family:var(--fd);font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.1rem}
+.pl{font-size:.46rem;letter-spacing:.08em;color:var(--ink3);font-style:italic;margin-bottom:.5rem}
+.ps{display:flex;gap:5px}
+.pd{width:11px;height:11px;border-radius:50%}
+/* BACK */
+.bk{transform:rotateY(180deg);color:white;padding:1.5rem;justify-content:space-between}
+.bt{font-size:.46rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:.35rem}
+.bn{font-family:var(--fd);font-size:1.35rem;font-weight:700;margin-bottom:.85rem}
+.bd{font-size:.68rem;line-height:1.75;color:rgba(255,255,255,.8);margin-bottom:.85rem;flex:1}
+.bn2{border-top:1px solid rgba(255,255,255,.15);padding-top:.75rem;margin-bottom:.85rem;display:flex;flex-direction:column;gap:0}
+.nr{display:flex;justify-content:space-between;padding:.3rem 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:.62rem}
+.nr:last-child{border-bottom:none}
+.nl{color:rgba(255,255,255,.5)}
+.bac{display:flex;gap:.4rem}
+.badd{flex:1;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);color:white;border-radius:100px;padding:.44rem .8rem;font-family:var(--fb);font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;cursor:none;transition:background .2s;font-weight:500}
+.badd:hover{background:rgba(255,255,255,.28)}
+.badd.done{background:rgba(255,255,255,.88);color:var(--ink)}
+.bback{background:transparent;border:1px solid rgba(255,255,255,.22);color:rgba(255,255,255,.55);border-radius:100px;width:30px;height:30px;font-size:.75rem;cursor:none;display:flex;align-items:center;justify-content:center;transition:border-color .2s,color .2s;flex-shrink:0}
+.bback:hover{border-color:rgba(255,255,255,.65);color:white}
+/* MONTH NAV */
+.mnav{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--rule)}
+.ml2{padding:1.8rem 2.5rem;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;gap:.3rem;border-right:1px solid var(--rule);cursor:none;transition:background .2s}
+.ml2:last-child{border-right:none;text-align:right;align-items:flex-end}
+.ml2:hover{background:var(--white)}
+.md{font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3)}
+.mname{font-family:var(--fd);font-size:1.7rem;font-weight:700;font-style:italic}
+.mej{display:flex;gap:.3rem;font-size:1.2rem}
+.ml2:last-child .mej{justify-content:flex-end}
+/* CART */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.2);z-index:250;opacity:0;pointer-events:none;transition:opacity .3s}
+.ov.on{opacity:1;pointer-events:all}
+.cp{position:fixed;right:0;top:0;bottom:0;width:340px;background:var(--white);border-left:1px solid var(--rule);z-index:300;transform:translateX(100%);transition:transform .38s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,.07)}
+.cp.on{transform:translateX(0)}
+.cph{padding:1.4rem 1.5rem;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.cph h3{font-family:var(--fd);font-size:1.15rem;font-weight:700}
+.cpc{background:none;border:none;cursor:none;font-size:1rem;color:var(--ink3);transition:color .2s}
+.cpc:hover{color:var(--ink)}
+.cpb{flex:1;overflow-y:auto;padding:1rem 1.5rem;display:flex;flex-direction:column;gap:.65rem}
+.cpe{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:.75rem;color:var(--ink3)}
+.cpe span{font-size:2rem}.cpe p{font-size:.65rem}
+.ci{display:flex;align-items:center;gap:.8rem;background:var(--bg);border-radius:12px;padding:.65rem .9rem;animation:si .25s ease both}
+@keyframes si{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
+.cie{font-size:1.6rem;flex-shrink:0}
+.cii{flex:1;min-width:0}
+.cin{font-size:.78rem;font-weight:500}
+.cis{font-size:.56rem;color:var(--ink3);margin-top:.08rem}
+.ciq{display:flex;align-items:center;gap:.3rem;flex-shrink:0}
+.qb{width:20px;height:20px;border:1px solid var(--rule);background:white;border-radius:50%;font-size:.7rem;cursor:none;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.qb:hover{background:var(--bg)}
+.qn{font-size:.68rem;font-weight:500;min-width:12px;text-align:center}
+.crm{background:none;border:none;cursor:none;color:var(--ink3);font-size:.75rem;transition:color .2s;flex-shrink:0}
+.crm:hover{color:#C84020}
+.cpf{padding:1.4rem 1.5rem;border-top:1px solid var(--rule);flex-shrink:0}
+.cpfl{font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:.35rem}
+.cpt{font-family:var(--fd);font-size:1.4rem;font-weight:700;margin-bottom:1.1rem}
+.ckb{width:100%;background:var(--ink);color:white;border:none;border-radius:100px;padding:.85rem;font-family:var(--fb);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;cursor:none;transition:background .2s}
+.ckb:hover{background:#333}
+footer{padding:1.5rem 2.5rem;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center}
+.ft{font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
+.ftl{font-family:var(--fd);font-size:.9rem;font-weight:700;letter-spacing:.18em}
+@media(max-width:900px){
+  .grid{grid-template-columns:repeat(2,1fr);padding:1.5rem}
+  nav,footer{padding-left:1.5rem;padding-right:1.5rem}
+  .pt,.fb{padding-left:1.5rem;padding-right:1.5rem}
+  .mnav{grid-template-columns:1fr}
+  .ml2{border-right:none;border-bottom:1px solid var(--rule)}
+  .ml2:last-child{text-align:left;align-items:flex-start;border-bottom:none}
+  .cp{width:100%}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div class="ov" id="ov" onclick="closeCart()"></div>
+<nav>
+  <div class="nl2">
+    <a class="nb" href="index.html">← All months</a>
+    <div class="ns"></div>
+    <a class="logo" href="index.html"></a>
+  </div>
+  <div class="nr2">
+    <span class="nm">September · 2025</span>
+    <button class="cart-btn" onclick="toggleCart()">🛒 Basket <span class="cc" id="cc">0</span></button>
+  </div>
+</nav>
+<div class="pt">
+  <div class="ptl">
+    <p>Month 09 of 12 · Summer</p>
+    <h1><em>September</em></h1>
+  </div>
+  <div class="ptr">
+    <p>8</p>
+    <p>Items in season</p>
+  </div>
+</div>
+<div class="fb">
+  <span class="flbl">Filter</span>
+  <button class="fbtn on" onclick="filt('all',this)">All</button>
+  <button class="fbtn" onclick="filt('fruit',this)">Fruit</button>
+  <button class="fbtn" onclick="filt('vegetable',this)">Vegetable</button>
+  <button class="fbtn" onclick="filt('herb',this)">Herb</button>
+  <button class="fbtn" onclick="filt('berry',this)">Berry</button>
+</div>
+<div class="grid">
+  <div class="fw" data-cat="fruit" onclick="flipCard(this)">
+    <div class="fi">
+      <div class="ff">
+        <div class="ft2" style="background:#F5EAE0">
+          <span class="ph">↺</span>
+          <span class="pe">🍎</span>
+          <div class="phb">
+            <button class="pb2 fvb" onclick="fav(event,this)">&hearts;</button>
+            <button class="pb2" onclick="flipCard(this.closest('.fw'));event.stopPropagation()">↺ flip</button>
+          </div>
+        </div>
+        <div class="fb2">
+          <p class="pn">Apple</p>
+          <p class="pl">Malus domestica</p>
+          <div class="ps"><div class="pd" style="background:#A81818"></div><div class="pd" style="background:#D85050"></div><div class="pd" style="background:#F0B0B0"></div></div>
+        </div>
+      </div>
+      <div class="bk" style="background:#7A1010">
+        <div><p class="bt">fruit · September</p><p class="bn">Apple</p></div>
+        <p class="bd">Autumn apple harvest begins. Quercetin and catechin in the skin reduce inflammation — eat with the skin on.</p>
+        <div class="bn2">
+          <div class="nr"><span class="nl">52</span><span>kcal</span></div>
+          <div class="nr"><span class="nl">Quercetin</span><span>★★★</span></div>
+          <div class="nr"><span class="nl">Fiber</span><span>2.4 g</span></div>
+        </div>
+        <div class="bac">
+          <button class="badd" onclick="cartAdd(event,'Apple','🍎','September')">+ Add to basket</button>
+          <button class="bback" onclick="unflip(event,this)">↩</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fw" data-cat="fruit" onclick="flipCard(this)">
+    <div class="fi">
+      <div class="ff">
+        <div class="ft2" style="background:#F5EAE0">
+          <span class="ph">↺</span>
+          <span class="pe">🍇</span>
+          <div class="phb">
+            <button class="pb2 fvb" onclick="fav(event,this)">&hearts;</button>
+            <button class="pb2" onclick="flipCard(this.closest('.fw'));event.stopPropagation()">↺ flip</button>
+          </div>
+        </div>
+        <div class="fb2">
+          <p class="pn">Grape</p>
+          <p class="pl">Vitis vinifera</p>
+          <div class="ps"><div class="pd" style="background:#6A28A0"></div><div class="pd" style="background:#9A58D0"></div><div class="pd" style="background:#C8A0E8"></div></div>
+        </div>
+      </div>
+      <div class="bk" style="background:#3A1060">
+        <div><p class="bt">fruit · September</p><p class="bn">Grape</p></div>
+        <p class="bd">Mid-September is peak Korean grape season. Resveratrol protects the cardiovascular system. Best eaten cool.</p>
+        <div class="bn2">
+          <div class="nr"><span class="nl">69</span><span>kcal</span></div>
+          <div class="nr"><span class="nl">Resveratrol</span><span>★★★</span></div>
+          <div class="nr"><span class="nl">Potassium</span><span>191 mg</span></div>
+        </div>
+        <div class="bac">
+          <button class="badd" onclick="cartAdd(event,'Grape','🍇','September')">+ Add to basket</button>
+          <button class="bback" onclick="unflip(event,this)">↩</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fw" data-cat="vegetable" onclick="flipCard(this)">
+    <div class="fi">
+      <div class="ff">
+        <div class="ft2" style="background:#F5EAE0">
+          <span class="ph">↺</span>
+          <span class="pe">🌰</span>
+          <div class="phb">
+            <button class="pb2 fvb" onclick="fav(event,this)">&hearts;</button>
+            <button class="pb2" onclick="flipCard(this.closest('.fw'));event.stopPropagation()">↺ flip</button>
+          </div>
+        </div>
+        <div class="fb2">
+          <p class="pn">Chestnut</p>
+          <p class="pl">Castanea crenata</p>
+          <div class="ps"><div class="pd" style="background:#8A5020"></div><div class="pd" style="background:#C07840"></div><div class="pd" style="background:#F0C090"></div></div>
+        </div>
+      </div>
+      <div class="bk" style="background:#5A2808">
+        <div><p class="bt">vegetable · September</p><p class="bn">Chestnut</p></div>
+        <p class="bd">Unlike other nuts, chestnuts are high in carbohydrates and low in fat. Boil or roast — peak in mid-October.</p>
+        <div class="bn2">
+          <div class="nr"><span class="nl">245</span><span>kcal</span></div>
+          <div class="nr"><span class="nl">Vitamin C</span><span>★★</span></div>
+          <div class="nr"><span class="nl">Carbs</span><span>45 g</span></div>
+        </div>
+        <div class="bac">
+          <button class="badd" onclick="cartAdd(event,'Chestnut','🌰','September')">+ Add to basket</button>
+          <button class="bback" onclick="unflip(event,this)">↩</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fw" data-cat="vegetable" onclick="flipCard(this)">
+    <div class="fi">
+      <div class="ff">
+        <div class="ft2" style="background:#F5EAE0">
+          <span class="ph">↺</span>
+          <span class="pe">🍄</span>
+          <div class="phb">
+            <button class="pb2 fvb" onclick="fav(event,this)">&hearts;</button>
+            <button class="pb2" onclick="flipCard(this.closest('.fw'));event.stopPropagation()">↺ flip</button>
+          </div>
+        </div>
+        <div class="fb2">
+          <p class="pn">Shiitake</p>
+          <p class="pl">Lentinula edodes</p>
+          <div class="ps"><div class="pd" style="background:#8A6848"></div><div class="pd" style="background:#B09070"></div><div class="pd" style="background:#D8C0A0"></div></div>
+        </div>
+      </div>
+      <div class="bk" style="background:#4A2808">
+        <div><p class="bt">vegetable · September</p><p class="bn">Shiitake</p></div>
+        <p class="bd">Dry in sunlight to multiply Vitamin D by 10×. Umami depth is unmatched among cultivated mushrooms.</p>
+        <div class="bn2">
+          <div class="nr"><span class="nl">34</span><span>kcal</span></div>
+          <div class="nr"><span class="nl">Vitamin D</span><span>★★★</span></div>
+          <div class="nr"><span class="nl">Umami</span><span>★★★</span></div>
+        </div>
+        <div class="bac">
+          <button class="badd" onclick="cartAdd(event,'Shiitake','🍄','September')">+ Add to basket</button>
+          <button class="bback" onclick="unflip(event,this)">↩</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fw" data-cat="fruit" onclick="flipCard(this)">
+    <div class="fi">
+      <div class="ff">
+        <div class="ft2" style="background:#F5EAE0">
+          <span class="ph">↺</span>
+          <span class="pe">🍐</span>
+          <div class="phb">
+            <button class="pb2 fvb" onclick="fav(event,this)">&hearts;</button>
+            <button class="pb2" onclick="flipCard(this.closest('.fw'));event.stopPropagation()">↺ flip</button>
+          </div>
+        </div>
+        <div class="fb2">
+          <p class="pn">Pear</p>
+          <p class="pl">Pyrus pyrifolia</p>
+          <div class="ps"><div class="pd" style="background:#888"></div><div class="pd" style="background:#aaa"></div><div class="pd" style="background:#ccc"></div></div>
+        </div>
+      </div>
+      <div class="bk" style="background:#5A5A10">
+        <div><p class="bt">fruit · September</p><p class="bn">Pear</p></div>
+        <p class="bd">Korean pear is crunchier and larger than western varieties. High in fiber and water — refreshing, not sweet.</p>
+        <div class="bn2">
+          <div class="nr"><span class="nl">57</span><span>kcal</span></div>
+          <div class="nr"><span class="nl">Fiber</span><span>2.3 g</span></div>
+          <div class="nr"><span class="nl">Water</span><span>88%</span></div>
+        </div>
+        <div class="bac">
+          <button class="badd" onclick="cartAdd(event,'Pear','🍐','September')">+ Add to basket</button>
+          <button class="bback" onclick="unflip(event,this)">↩</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fw" data-cat="vegetable" onclick="flipCard(this)">
+    <div class="fi">
+      <div class="ff">
+        <div class="ft2" style="background:#F5EAE0">
+          <span class="ph">↺</span>
+          <span class="pe">🎃</span>
+          <div class="phb">
+            <button class="pb2 fvb" onclick="fav(event,this)">&hearts;</button>
+            <button class="pb2" onclick="flipCard(this.closest('.fw'));event.stopPropagation()">↺ flip</button>
+          </div>
+        </div>
+        <div class="fb2">
+          <p class="pn">Squash</p>
+          <p class="pl">Cucurbita moschata</p>
+          <div class="ps"><div class="pd" style="background:#888"></div><div class="pd" style="background:#aaa"></div><div class="pd" style="background:#ccc"></div></div>
+        </div>
+      </div>
+      <div class="bk" style="background:#8A4800">
+        <div><p class="bt">vegetable · September</p><p class="bn">Squash</p></div>
+        <p class="bd">Kabocha squash is sweeter than western pumpkin. The skin is edible when roasted. Peak in late October.</p>
+        <div class="bn2">
+          <div class="nr"><span class="nl">45</span><span>kcal</span></div>
+          <div class="nr"><span class="nl">Vitamin A</span><span>★★★</span></div>
+          <div class="nr"><span class="nl">Beta-carotene</span><span>★★</span></div>
+        </div>
+        <div class="bac">
+          <button class="badd" onclick="cartAdd(event,'Squash','🎃','September')">+ Add to basket</button>
+          <button class="bback" onclick="unflip(event,this)">↩</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fw" data-cat="vegetable" onclick="flipCard(this)">
+    <div class="fi">
+      <div class="ff">
+        <div class="ft2" style="background:#F5EAE0">
+          <span class="ph">↺</span>
+          <span class="pe">🍠</span>
+          <div class="phb">
+            <button class="pb2 fvb" onclick="fav(event,this)">&hearts;</button>
+            <button class="pb2" onclick="flipCard(this.closest('.fw'));event.stopPropagation()">↺ flip</button>
+          </div>
+        </div>
+        <div class="fb2">
+          <p class="pn">Sweet Potato</p>
+          <p class="pl">Ipomoea batatas</p>
+          <div class="ps"><div class="pd" style="background:#C07828"></div><div class="pd" style="background:#E0A050"></div><div class="pd" style="background:#F8D0A0"></div></div>
+        </div>
+      </div>
+      <div class="bk" style="background:#8A4808">
+        <div><p class="bt">vegetable · September</p><p class="bn">Sweet Potato</p></div>
+        <p class="bd">Beta-carotene converts to Vitamin A. The purple variety also contains anthocyanins — double the antioxidant benefit.</p>
+        <div class="bn2">
+          <div class="nr"><span class="nl">86</span><span>kcal</span></div>
+          <div class="nr"><span class="nl">Beta-carotene</span><span>★★★</span></div>
+          <div class="nr"><span class="nl">Fiber</span><span>3 g</span></div>
+        </div>
+        <div class="bac">
+          <button class="badd" onclick="cartAdd(event,'Sweet Potato','🍠','September')">+ Add to basket</button>
+          <button class="bback" onclick="unflip(event,this)">↩</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fw" data-cat="vegetable" onclick="flipCard(this)">
+    <div class="fi">
+      <div class="ff">
+        <div class="ft2" style="background:#F5EAE0">
+          <span class="ph">↺</span>
+          <span class="pe">🥕</span>
+          <div class="phb">
+            <button class="pb2 fvb" onclick="fav(event,this)">&hearts;</button>
+            <button class="pb2" onclick="flipCard(this.closest('.fw'));event.stopPropagation()">↺ flip</button>
+          </div>
+        </div>
+        <div class="fb2">
+          <p class="pn">Carrot</p>
+          <p class="pl">Daucus carota</p>
+          <div class="ps"><div class="pd" style="background:#888"></div><div class="pd" style="background:#aaa"></div><div class="pd" style="background:#ccc"></div></div>
+        </div>
+      </div>
+      <div class="bk" style="background:#9A4800">
+        <div><p class="bt">vegetable · September</p><p class="bn">Carrot</p></div>
+        <p class="bd">Beta-carotene absorption increases 5× when cooked with fat. Always roast with olive oil for best nutrition.</p>
+        <div class="bn2">
+          <div class="nr"><span class="nl">41</span><span>kcal</span></div>
+          <div class="nr"><span class="nl">Beta-carotene</span><span>★★★</span></div>
+          <div class="nr"><span class="nl">Vitamin K</span><span>13 μg</span></div>
+        </div>
+        <div class="bac">
+          <button class="badd" onclick="cartAdd(event,'Carrot','🥕','September')">+ Add to basket</button>
+          <button class="bback" onclick="unflip(event,this)">↩</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="mnav">
+  <a class="ml2" href="august.html">
+    <span class="md">← Previous</span>
+    <span class="mname">August</span>
+    <div class="mej"><span>🍉</span><span>🍆</span><span>🌽</span></div>
+  </a>
+  <a class="ml2" href="all_grid.html">
+    <span class="md">View All →</span>
+    <span class="mname">All Produce</span>
+    <div class="mej"><span>🍅</span><span>🍎</span><span>🍇</span></div>
+  </a>
+</div>
+<footer><span class="ft"> </span><span class="ftl"></span><span class="ft"><a href="index.html" style="color:inherit;text-decoration:none">← All months</a></span></footer>
+<div class="cp" id="cp"><div class="cph"><h3>Basket</h3><button class="cpc" onclick="closeCart()">✕</button></div><div class="cpb" id="cb"><div class="cpe"><span>🛒</span><p>Your basket is empty</p></div></div><div class="cpf" id="cf" style="display:none"><p class="cpfl">September seasonal box</p><p class="cpt" id="ct">0</p><button class="ckb">Checkout →</button></div></div>
+<script src="grove.js"></script>
+<script>
+const cur=document.getElementById('cur');
+document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px'});
+// interactive cursor on produce cards
+document.querySelectorAll('.fw').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cur.classList.add('produce'));
+  el.addEventListener('mouseleave',()=>cur.classList.remove('produce'));
+});
+document.querySelectorAll('.cart-btn,.cpc,.qb,.crm,.ckb,.fbtn,.ml2,.pb2,.badd,.bback').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.classList.remove('produce');cur.classList.add('h')});
+  el.addEventListener('mouseleave',()=>cur.classList.remove('h'));
+});
+function flipCard(w){w.classList.toggle('flipped')}
+function unflip(e,btn){e.stopPropagation();btn.closest('.fw').classList.remove('flipped')}
+function fav(e,btn){e.stopPropagation();btn.classList.toggle('on');btn.textContent=btn.classList.contains('on')?'♥':'♡'}
+function filt(cat,btn){
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  document.querySelectorAll('.fw').forEach(c=>c.classList.toggle('hidden',cat!=='all'&&c.dataset.cat!==cat));
+}
+function cartAdd(e,name,emoji,month){
+  e.stopPropagation();const btn=e.currentTarget;
+  addItem(name,emoji,month);
+  btn.textContent='✓ Added';btn.classList.add('done');
+  setTimeout(()=>{btn.textContent='+ Add to basket';btn.classList.remove('done')},1800);
+  const c=document.getElementById('cc');c.textContent=totalQty();c.classList.add('b');setTimeout(()=>c.classList.remove('b'),300);
+  renderCart();
+}
+function renderCart(){
+  const cart=getCart(),total=totalQty();
+  document.getElementById('cc').textContent=total;
+  const body=document.getElementById('cb'),foot=document.getElementById('cf');
+  if(!cart.length){body.innerHTML='<div class="cpe"><span>🛒</span><p>Your basket is empty</p></div>';foot.style.display='none';return}
+  body.innerHTML=cart.map(i=>`<div class="ci"><span class="cie">${i.emoji}</span><div class="cii"><p class="cin">${i.name}</p><p class="cis">${i.month}</p></div><div class="ciq"><button class="qb" onclick="chg(${i.id},-1)">−</button><span class="qn">${i.qty}</span><button class="qb" onclick="chg(${i.id},1)">+</button></div><button class="crm" onclick="rm(${i.id})">✕</button></div>`).join('');
+  foot.style.display='block';document.getElementById('ct').textContent=total+(total===1?' item':' items');
+}
+function chg(id,d){changeQty(id,d);renderCart()}
+function rm(id){removeItem(id);renderCart()}
+function toggleCart(){document.getElementById('cp').classList.toggle('on');document.getElementById('ov').classList.toggle('on')}
+function closeCart(){document.getElementById('cp').classList.remove('on');document.getElementById('ov').classList.remove('on')}
+renderCart();
+</script>
+</body>
+</html>
